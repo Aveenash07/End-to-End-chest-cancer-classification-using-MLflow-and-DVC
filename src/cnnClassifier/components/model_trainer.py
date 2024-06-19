@@ -7,13 +7,14 @@ from cnnClassifier.entity.config_entity import TrainingConfig
 from pathlib import Path
 
 
+
 class Training:
     def __init__(self, config: TrainingConfig):
         self.config = config
 
     
     def get_base_model(self):
-        self.model = tf.keras.models.load_model(
+        self.model = tf.keras.models.load_model( # type: ignore
             self.config.updated_base_model_path
         )
 
@@ -30,7 +31,7 @@ class Training:
             interpolation="bilinear"
         )
 
-        valid_datagenerator = keras.src.legacy.preprocessing.image(
+        valid_datagenerator = tf.keras.preprocessing.image.ImageDataGenerator( # type: ignore
             **datagenerator_kwargs
         )
 
@@ -42,7 +43,7 @@ class Training:
         )
 
         if self.config.params_is_augmentation:
-            train_datagenerator = tf.keras.preprocessing.image.ImageDataGenerator(
+            train_datagenerator = tf.keras.preprocessing.image.ImageDataGenerator( # type: ignore
                 rotation_range=40,
                 horizontal_flip=True,
                 width_shift_range=0.2,
@@ -63,7 +64,7 @@ class Training:
 
     
     @staticmethod
-    def save_model(path: Path, model: tf.keras.Model):
+    def save_model(path: Path, model: tf.keras.Model): # type: ignore
         model.save(path)
 
 
